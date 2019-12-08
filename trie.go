@@ -9,6 +9,7 @@ type node struct {
     isTerminal bool
 }
 
+// New creates a new Trie
 func New() *Trie {
     return &Trie{
         root: makeNode(),
@@ -22,6 +23,7 @@ func makeNode() *node {
     }
 }
 
+// Insert inserts a slice of runes into the trie
 func (t *Trie) Insert(runes []rune) {
     current := t.root
     for _, r := range runes {
@@ -36,6 +38,7 @@ func (t *Trie) Insert(runes []rune) {
     current.isTerminal = true
 }
 
+// Search returns true if the slice of runes is present in the trie, false otherwise
 func (t *Trie) Search(runes []rune) bool {
     current := t.root
     for _, r := range runes {
@@ -48,6 +51,7 @@ func (t *Trie) Search(runes []rune) bool {
     return current.isTerminal
 }
 
+// Delete returns true if the slice of runes was present and deleted, false otherwise
 func (t *Trie) Delete(runes []rune) bool {
     current := t.root
     var nodes []*node
@@ -62,13 +66,13 @@ func (t *Trie) Delete(runes []rune) bool {
     if !current.isTerminal {
         return false
     }
+    current.isTerminal = false
     var (
         r      rune
         parent *node
     )
     for {
-        if len(current.children) > 1 {
-            current.isTerminal = false
+        if len(current.children) > 0 {
             break
         }
         // Pop off the parent of current node
